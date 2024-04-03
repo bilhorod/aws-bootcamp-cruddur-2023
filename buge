@@ -11,6 +11,8 @@ aws sns subscribe \
 
 
 aws sns subscribe \
-    --topic-arn arn:aws:sns:us-west-1:189717459227:BillingAlarm \
+    --topic-arn arn:aws:sns:us-west-1:189717459227:CodeCampTopic \
     --protocol email \
     --notification-endpoint artemlt92@example.com
+
+    aws cloudwatch put-metric-alarm --cli-input-json file://AWS/json/alarm-config.json
