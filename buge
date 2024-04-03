@@ -1,0 +1,16 @@
+aws budgets create-budget \
+    --account-id 189717459227 \
+    --budget file://AWS/json/budget.json \
+    --notifications-with-subscribers file://AWS/json/budget-notifications-with-subscribers.json
+
+
+aws sns subscribe \
+    --topic-arn arn:aws:sns:us-west-2:123456789012:my-topic \
+    --protocol email \
+    --notification-endpoint my-email@example.com
+
+
+aws sns subscribe \
+    --topic-arn arn:aws:sns:us-west-1:189717459227:BillingAlarm \
+    --protocol email \
+    --notification-endpoint artemlt92@example.com
