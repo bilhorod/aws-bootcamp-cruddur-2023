@@ -72,8 +72,7 @@ paths:
   /api/activities/notifications:
     get:
       description: 'Return a feed of activity of all my followers'
-      tags:
-        -activities
+      tags: []
       parameters: []
       responses:
         '200':
