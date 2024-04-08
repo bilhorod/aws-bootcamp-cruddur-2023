@@ -28,7 +28,6 @@ processor = BatchSpanProcessor(OTLPSpanExporter())
 provider.add_span_processor(processor)
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
-name
 
 app = Flask(__name__)
 #Initialize automatic instrumentation with Flask
