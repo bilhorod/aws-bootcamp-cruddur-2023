@@ -1,3 +1,10 @@
+export HONEYCOMB_API_KEY="c3RJh5A4zeyqUvsaZasVeB"
+gp env HONEYCOMB_API_KEY="c3RJh5A4zeyqUvsaZasVeB"
+
+export HONEYCOMB_SERVICE_NAME="Cruddur"
+gp env HONEYCOMB_SERVICE_NAME="Cruddur"
+
+
 # FREE AWS Cloud Project Bootcamp
 
 - Application: Cruddur
