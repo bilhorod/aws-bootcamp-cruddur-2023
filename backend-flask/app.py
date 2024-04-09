@@ -26,8 +26,6 @@ from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProces
 from aws_xray_sdk.core import ray_recorder 
 from aws_xray_sdk.ext.flask.middleware import XRayMiddleware 
 
-
-
 #Honeycomb
 provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
@@ -46,8 +44,12 @@ trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
 
 app = Flask(__name__)
-#Initialize automatic instrumentation with Flask
-#honeycomb
+
+#xray
+XRayMiddleware(app, xray_recorder)
+
+#Honeycomb
+#Initialize automatic instrumentat ion with Flask
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
