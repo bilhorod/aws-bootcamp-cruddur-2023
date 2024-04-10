@@ -13,6 +13,8 @@ from services.message_groups import *
 from services.messages import *
 from services.create_message import *
 from services.show_activity import *
+from services.user_activities import *
+
 
 #honeycomb
 from opentelemetry import trace 
