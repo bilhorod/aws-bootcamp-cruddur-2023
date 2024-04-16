@@ -11,3 +11,8 @@ opentelemetry-instrumentation-requests
 aws-xray-sdk
 
 watchtower
+blinker
+rollbar
+
+export ROLLBAR_ACCESS_TOKEN="17cc5afcf3bf4839b11a2810bb7b9bd9"
+gp env ROLLBAR_ACCESS_TOKEN="17cc5afcf3bf4839b11a2810bb7b9bd9"

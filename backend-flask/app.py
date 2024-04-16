@@ -15,8 +15,6 @@ from services.messages import *
 from services.create_message import *
 from services.show_activity import *
 
-
-
 #honeycomb
 from opentelemetry import trace 
 from opentelemetry.instrumentation.flask import FlaskInstrumentor 
@@ -34,6 +32,13 @@ from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProces
 import watchtower
 import logging
 from time import strftime
+
+#ROLLBAR
+from time import strftime
+import os
+import rollbar
+import rollbar.contrib.flask
+from flask import got_request_exception
 
 # Configuring Logger to Use Cloudwatch
 #LOGGER = logging.getLogger(__name__)
@@ -73,6 +78,22 @@ FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
 
+rollbar_access_token = os.getenv("ROLLBAR_ACCES_TOKEN")
+@app.before_first_request
+def init_rollbar():
+    """init rollbar module"""
+    rollbar.init(
+        #acces token
+        rollbar_access_token,
+        #env name
+        "production",
+        #server root directory
+        root=os.path.dirname(os.path.realpath(__file__)),
+        allow_logging_basic_config=false)
+    
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+
+
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
 origins = [frontend, backend]
@@ -91,6 +112,10 @@ cors = CORS(
 #  LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
 #  return response
 
+@app.route('/rollbar/test')
+def rollbar_test():
+    rollbar.report_message("Hello World!", "warning")
+    return "Hello World"
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
