@@ -49,7 +49,6 @@ from flask import got_request_exception
 #LOGGER.addHandler(cw_handler)
 #LOGGER.info("TestLog")
 
-
 #Honeycomb
 provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
@@ -58,7 +57,6 @@ provider.add_span_processor(processor)
 #Xray
 xray_url = os.getenv("AWS_XRAY_URL")
 xray_recorder.configure(service= 'backend-flask', dynamic_naming=xray_url)
-
 
 #Show this in the logs within the backend-flask app
 simple_processor = SimpleSpanProcessor(ConsoleSpanExporter())
@@ -77,23 +75,6 @@ app = Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 
-
-rollbar_access_token = os.getenv("ROLLBAR_ACCES_TOKEN")
-@app.before_first_request
-def init_rollbar():
-    """init rollbar module"""
-    rollbar.init(
-        #acces token
-        rollbar_access_token,
-        #env name
-        "production",
-        #server root directory
-        root=os.path.dirname(os.path.realpath(__file__)),
-        allow_logging_basic_config=false)
-    
-    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
-
-
 frontend = os.getenv('FRONTEND_URL')
 backend = os.getenv('BACKEND_URL')
 origins = [frontend, backend]
@@ -111,6 +92,23 @@ cors = CORS(
 #  timestamp = strftime('[%Y-%b-%d %H:%M]')
 #  LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
 #  return response
+
+#ROLLBAR
+rollbar_access_token = os.getenv("ROLLBAR_ACCES_TOKEN")
+@app.before_first_request
+def init_rollbar():
+    """init rollbar module"""
+    rollbar.init(
+        #acces token
+        rollbar_access_token,
+        #env name
+        "production",
+        #server root directory
+        root=os.path.dirname(os.path.realpath(__file__)),
+        allow_logging_basic_config=false)
+    
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+
 
 @app.route('/rollbar/test')
 def rollbar_test():
