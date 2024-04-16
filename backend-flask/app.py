@@ -94,8 +94,8 @@ cors = CORS(
 #  return response
 
 #ROLLBAR
-rollbar_access_token = os.getenv("ROLLBAR_ACCES_TOKEN")
-@app.before_first_request
+rollbar_access_token = os.getenv("ROLLBAR_ACCESS_TOKEN")
+
 def init_rollbar():
     """init rollbar module"""
     rollbar.init(
@@ -105,9 +105,10 @@ def init_rollbar():
         "production",
         #server root directory
         root=os.path.dirname(os.path.realpath(__file__)),
-        allow_logging_basic_config=false)
+        allow_logging_basic_config=False)
     
-    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+
 
 
 @app.route('/rollbar/test')
