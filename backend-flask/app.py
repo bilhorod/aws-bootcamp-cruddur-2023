@@ -39,6 +39,8 @@ import os
 import rollbar
 import rollbar.contrib.flask
 from flask import got_request_exception
+from flask import Flask
+
 
 # Configuring Logger to Use Cloudwatch
 #LOGGER = logging.getLogger(__name__)
@@ -107,6 +109,10 @@ def init_rollbar():
         root=os.path.dirname(os.path.realpath(__file__)),
         allow_logging_basic_config=False)
     
+init_rollbar()
+import rollbar
+print(os.environ['ROLLBAR_ACCESS_TOKEN'])
+
 got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
 
 
@@ -115,6 +121,12 @@ got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
 def rollbar_test():
     rollbar.report_message("Hello World!", "warning")
     return "Hello World"
+
+@app.route('/rollbar/error')
+def rollbar_error():
+    rollbar.report_message("Error", "warning")
+    return "Error"
+
 
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
