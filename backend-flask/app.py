@@ -25,8 +25,8 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
 
 #xray
-#from aws_xray_sdk.core import xray_recorder 
-#from aws_xray_sdk.ext.flask.middleware import XRayMiddleware 
+from aws_xray_sdk.core import xray_recorder 
+from aws_xray_sdk.ext.flask.middleware import XRayMiddleware 
 
 #cloudwatch logs
 import watchtower
@@ -70,7 +70,7 @@ tracer = trace.get_tracer(__name__)
 app = Flask(__name__)
 
 #xray
-#XRayMiddleware(app, xray_recorder)
+XRayMiddleware(app, xray_recorder)
 
 #Honeycomb
 #Initialize automatic instrumentat ion with Flask
@@ -127,7 +127,7 @@ def rollbar_error():
     rollbar.report_message("Error", "warning")
     return "Error"
 
-
+@xray_recorder.capture('activities_groups')
 @app.route("/api/message_groups", methods=['GET'])
 def data_message_groups():
   user_handle  = 'andrewbrown'
@@ -163,16 +163,19 @@ def data_create_message():
     return model['data'], 200
   return
 
+@xray_recorder.capture('activities_home')
 @app.route("/api/activities/home", methods=['GET'])
 def data_home():
   data = HomeActivities.run()
   return data, 200
-
+  
+@xray_recorder.capture('activities_notifications')
 @app.route("/api/activities/notifications", methods=['GET'])
 def data_notifications():
   data = NotificationsActivities.run()
   return data, 200
 
+@xray_recorder.capture('activities_users')
 @app.route("/api/activities/@<string:handle>", methods=['GET'])
 def data_handle(handle):
   model = UserActivities.run(handle)
@@ -204,6 +207,7 @@ def data_activities():
     return model['data'], 200
   return
 
+@xray_recorder.capture('activities_show')
 @app.route("/api/activities/<string:activity_uuid>", methods=['GET'])
 def data_show_activity(activity_uuid):
   data = ShowActivity.run(activity_uuid=activity_uuid)
