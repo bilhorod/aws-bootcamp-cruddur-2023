@@ -11,7 +11,7 @@ tasks:
 - name: react-js
   command: |
     echo $PATH
-    cd frontend-react.js
+    cd frontend-react-js
     npm i 
 - name: postgres
   init: |
