@@ -10,6 +10,7 @@ tasks:
     cd $THEIA_WORKSPACE_ROOT
 - name: react-js
   command: |
+    echo $PATH
     cd frontend-react.js
     npm i 
 - name: postgres
