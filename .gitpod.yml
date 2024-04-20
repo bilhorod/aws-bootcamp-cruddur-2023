@@ -14,9 +14,9 @@ tasks:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     init: |
-      npm install -g aws-amplify
-      echo 'export PATH="$PATH:$(npm bin)"' >> ~/.bashrc
-      source ~/.bashrc
+      curl -o- -L https://github.com/aws-amplify/amplify-cli/releases/latest/download/amplify-ubuntu.zip | tar -xz -C /tmp
+      sudo mv /tmp/amplify /usr/local/bin/
+      chmod +x /usr/local/bin/amplify
       amplify configure
 
   - name: react-js
