@@ -14,10 +14,11 @@ tasks:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
     init: |
-      curl -o- -L https://github.com/aws-amplify/amplify-cli/releases/latest/download/amplify-ubuntu.zip | tar -xz -C /tmp
       sudo mv /tmp/amplify /usr/local/bin/
       chmod +x /usr/local/bin/amplify
+      echo 'export PATH=$PATH:/usr/local/aws-cli/v2/2.15.40/dist/awscli/botocore/data' >> ~/.bashrc
       amplify configure
+
 
   - name: react-js
     command: |
