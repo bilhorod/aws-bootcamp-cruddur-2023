@@ -9,17 +9,6 @@ tasks:
       sudo ./aws/install 
       cd $THEIA_WORKSPACE_ROOT
 
-  - name: amplify-cli
-    env:
-      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
-      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
-    init: |
-      sudo mv /tmp/amplify /usr/local/bin/
-      chmod +x /usr/local/bin/amplify
-      echo 'export PATH=$PATH:/usr/local/aws-cli/v2/2.15.40/dist/awscli/botocore/data' >> ~/.bashrc
-      amplify configure
-
-
   - name: react-js
     command: |
       echo $PATH
